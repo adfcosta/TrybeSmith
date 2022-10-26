@@ -29,7 +29,8 @@ const loginValidation = async (req: Request, res: Response, next: NextFunction) 
   if (error) {
     console.log(error.details[0]);
     const errorType = error.details[0].type;
-    const errorCode = statusSwitchCase(errorType);
+    const splitErrorType = errorType.split('.')[1];
+    const errorCode = statusSwitchCase(splitErrorType);
     return res.status(errorCode).json({ message: error.message });
   }
   next();
