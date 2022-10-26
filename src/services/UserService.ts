@@ -1,6 +1,6 @@
 import connection from '../models/connection';
 import UserModel from '../models/UserModel';
-import { User } from '../interfaces/User';
+import { User, UserLogin } from '../interfaces/User';
 import Token from '../utils/JWT';
 
 export default class UserService {
@@ -20,5 +20,11 @@ export default class UserService {
     const { username } = newUser;
     const auth = this.token.generateToken(username);
     return auth;
+  }
+
+  public async verifyLogin({ username, password }: UserLogin): Promise<UserLogin | string> {
+    const validLogin = await this.model.verifyLogin({ username, password });
+    const auth = this.token.generateToken(username);
+    return validLogin ? auth : validLogin;
   }
 }
