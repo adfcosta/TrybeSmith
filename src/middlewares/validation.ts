@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { statusSwitchCase } from '../utils/statusCode';
 
 const loginSchema = Joi.object({
-  username: Joi.string().required(),
+  username: Joi.number().required().strict(),
   password: Joi.string().required(),
 });
 
@@ -13,6 +13,13 @@ const productSchema = Joi.object({
 
 });
 
+const newUserSchema = Joi.object({
+  username: Joi.string().required().min(3),
+  classe: Joi.string().required().min(3),
+  level: Joi.number().required().min(1).strict(),
+  password: Joi.string().required().min(8),
+});
+
 const loginValidation = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   const { error } = loginSchema.validate({
@@ -20,7 +27,7 @@ const loginValidation = async (req: Request, res: Response, next: NextFunction) 
     password,
   });
   if (error) {
-    console.log(error.details[0].type);
+    console.log(error.details[0]);
     const errorType = error.details[0].type;
     const errorCode = statusSwitchCase(errorType);
     return res.status(errorCode).json({ message: error.message });
@@ -38,6 +45,23 @@ export const productValidation = async (req: Request, res: Response, next: NextF
     console.log(error.details[0].type);
     const errorType = error.details[0].type;
     const errorCode = statusSwitchCase(errorType);
+    return res.status(errorCode).json({ message: error.message });
+  }
+  next();
+};
+
+export const newUserValidation = async (req: Request, res: Response, next: NextFunction) => {
+  const { username, classe, level, password } = req.body;
+  const { error } = newUserSchema.validate({
+    username,
+    classe,
+    level,
+    password,
+  });
+  if (error) {
+    const errorType = error.details[0].type;
+    const splitErrorType = errorType.split('.')[1];
+    const errorCode = statusSwitchCase(splitErrorType);
     return res.status(errorCode).json({ message: error.message });
   }
   next();
