@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { statusSwitchCase } from '../utils/statusCode';
 
 const loginSchema = Joi.object({
-  username: Joi.number().required().strict(),
+  username: Joi.string().required(),
   password: Joi.string().required(),
 });
 
