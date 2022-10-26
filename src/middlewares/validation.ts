@@ -20,6 +20,14 @@ const newUserSchema = Joi.object({
   password: Joi.string().required().min(8),
 });
 
+const newOrderSchema = Joi.object({
+  productsIds: Joi.array().items(Joi.number()).min(1).strict()
+    .required()
+    .messages({
+      'array.min': '{#label} must include only numbers',
+    }),
+});
+
 const loginValidation = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   const { error } = loginSchema.validate({
@@ -62,6 +70,18 @@ export const newUserValidation = async (req: Request, res: Response, next: NextF
   });
   if (error) {
     const errorType = error.details[0].type;
+    const splitErrorType = errorType.split('.')[1];
+    const errorCode = statusSwitchCase(splitErrorType);
+    return res.status(errorCode).json({ message: error.message });
+  }
+  next();
+};
+
+export const newOrderValidation = async (req: Request, res: Response, next: NextFunction) => {
+  const { error } = newOrderSchema.validate(req.body);
+  if (error) {
+    const errorType = error.details[0].type;
+    console.log('errorType', errorType);
     const splitErrorType = errorType.split('.')[1];
     const errorCode = statusSwitchCase(splitErrorType);
     return res.status(errorCode).json({ message: error.message });
