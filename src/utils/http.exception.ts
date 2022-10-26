@@ -1,5 +1,5 @@
 class HttpException extends Error {
-  status: number;
+  status?: number;
 
   message: string;
 
