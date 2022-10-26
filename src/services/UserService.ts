@@ -18,13 +18,13 @@ export default class UserService {
     console.log(createdUser);
     if (createdUser === 0) throw new Error('User not created');
     const { username } = newUser;
-    const auth = this.token.generateToken(username);
+    const auth = this.token.generateToken({ username, id: createdUser });
     return auth;
   }
 
   public async verifyLogin({ username, password }: UserLogin): Promise<UserLogin | string> {
     const validLogin = await this.model.verifyLogin({ username, password });
-    const auth = this.token.generateToken(username);
+    const auth = this.token.generateToken({ username, id: validLogin?.id });
     return validLogin ? auth : validLogin;
   }
 }
