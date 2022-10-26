@@ -9,13 +9,30 @@ const statusCodes = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+// export const statusSwitchCase = (type: string) => {
+//   switch (type) {
+//     case 'any.required':
+//       return statusCodes.BAD_REQUEST;
+//     case 'string.base':
+//       return statusCodes.UNPROCESSABLE_ENTITY;
+//       case 'number.base':
+//         return statusCodes.UNPROCESSABLE_ENTITY;
+//     case 'string.min':
+//       return statusCodes.UNPROCESSABLE_ENTITY;
+//     case 'number.min':
+//       return statusCodes.UNPROCESSABLE_ENTITY;
+//     default:
+//       return statusCodes.INTERNAL_SERVER_ERROR;
+//   }
+// };
+
 export const statusSwitchCase = (type: string) => {
   switch (type) {
-    case 'any.required':
+    case 'required':
       return statusCodes.BAD_REQUEST;
-    case 'string.base':
+    case 'base':
       return statusCodes.UNPROCESSABLE_ENTITY;
-    case 'string.min':
+    case 'min':
       return statusCodes.UNPROCESSABLE_ENTITY;
     default:
       return statusCodes.INTERNAL_SERVER_ERROR;
