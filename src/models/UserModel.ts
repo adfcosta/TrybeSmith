@@ -15,8 +15,8 @@ export default class UserModel {
       [username, classe, level, password],
     );
     const [dataInserted] = result;
-    const { affectedRows } = dataInserted;
-    return affectedRows;
+    const { insertId } = dataInserted;
+    return insertId;
   }
 
   public async verifyLogin({ username, password }: UserLogin): Promise<UserLogin> {
