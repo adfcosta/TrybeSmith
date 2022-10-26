@@ -44,7 +44,8 @@ export const productValidation = async (req: Request, res: Response, next: NextF
   if (error) {
     console.log(error.details[0].type);
     const errorType = error.details[0].type;
-    const errorCode = statusSwitchCase(errorType);
+    const splitErrorType = errorType.split('.')[1];
+    const errorCode = statusSwitchCase(splitErrorType);
     return res.status(errorCode).json({ message: error.message });
   }
   next();
